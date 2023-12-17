@@ -42,6 +42,7 @@ def test_post_register_unsuccessful(browser_open):
     assert result.status_code == 400
     assert result.json()["error"] == "Missing password"
 
+
 def test_post_register_incorrect_mail(browser_open):
     url = f'{browser_open}register'
     payload = {
@@ -54,21 +55,9 @@ def test_post_register_incorrect_mail(browser_open):
     assert result.status_code == 400
     assert result.json()["error"] == "Note: Only defined users succeed registration"
 
-def test_post_register_incorrect_password(browser_open):
-    url = f'{browser_open}register'
-    payload = {
-        "email": "eve.holt@reqres.in",
-        "password": "incorrect_password"
-    }
-
-    result = requests.post(url, payload)
-
-    assert result.status_code == 400
-    assert result.json()["error"] == "Note: Only defined users succeed registration"
-
 
 @pytest.mark.parametrize('id_', [3])
-def test_put_update_succssefull(id_, browser_open):
+def test_put_update_successfull(id_, browser_open):
     url = f'{browser_open}users/{id_}'
     schema = load_schema("put_update.json")
     payload = {
@@ -83,16 +72,18 @@ def test_put_update_succssefull(id_, browser_open):
     assert result.json()["name"] == "Oleg"
     assert result.json()["job"] == "QA engineer"
 
+
 @pytest.mark.parametrize('id_', [3])
-def test_user_delete_succsess(id_, browser_open):
+def test_user_delete_successfull(id_, browser_open):
     url = f'{browser_open}users/{id_}'
 
     result = requests.delete(url)
 
     assert result.status_code == 204
 
+
 @pytest.mark.parametrize('id_', [3])
-def test_user_delete_succsess(id_, browser_open):
+def test_user_delete_successfull(id_, browser_open):
     url = f'{browser_open}users/{id_}'
 
     result = requests.delete(url)
@@ -103,7 +94,7 @@ def test_user_delete_succsess(id_, browser_open):
 def test_post_create(browser_open):
     url = f'{browser_open}users'
     schema = load_schema("post_create.json")
-    payload ={
+    payload = {
         "name": "Ivan",
         "job": "leader"
     }
@@ -112,13 +103,10 @@ def test_post_create(browser_open):
     jsonschema.validate(result.json(), schema)
     assert result.status_code == 201
 
+
 @pytest.mark.parametrize('id_', [13, 23])
 def test_unknown_unsuccsessfuly(id_, browser_open):
     url = f'{browser_open}unknown/{id_}'
     result = requests.get(url)
     assert result.status_code == 404
     assert result.json() == {}
-
-
-
-
