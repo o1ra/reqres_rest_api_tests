@@ -1,12 +1,12 @@
 import jsonschema
 import pytest
 import requests
-from tests.conftest import browser_open
+from tests.conftest import open_url
 from utils.load_shema import load_schema
 
 
-def test_get_list_users_unknown_successfully(browser_open):
-    url = f'{browser_open}unknown'
+def test_get_list_users_unknown_successfully(open_url):
+    url = f'{open_url}unknown'
     schema = load_schema("get_list_unknown.json")
 
     result = requests.get(url)
@@ -16,8 +16,8 @@ def test_get_list_users_unknown_successfully(browser_open):
     assert result.json()["per_page"] == len(result.json()['data'])
 
 
-def test_post_register_successful(browser_open):
-    url = f'{browser_open}register'
+def test_post_register_successful(open_url):
+    url = f'{open_url}register'
     schema = load_schema("post_register_successful.json")
     payload = {
         "email": "eve.holt@reqres.in",
@@ -30,8 +30,8 @@ def test_post_register_successful(browser_open):
     assert result.status_code == 200
 
 
-def test_post_register_unsuccessful(browser_open):
-    url = f'{browser_open}register'
+def test_post_register_unsuccessful(open_url):
+    url = f'{open_url}register'
     payload = {
         "email": "eve.holt@reqres.in",
 
@@ -43,8 +43,8 @@ def test_post_register_unsuccessful(browser_open):
     assert result.json()["error"] == "Missing password"
 
 
-def test_post_register_incorrect_mail(browser_open):
-    url = f'{browser_open}register'
+def test_post_register_incorrect_mail(open_url):
+    url = f'{open_url}register'
     payload = {
         "email": "eve.holt",
         "password": "pistol"
@@ -57,8 +57,8 @@ def test_post_register_incorrect_mail(browser_open):
 
 
 @pytest.mark.parametrize('id_', [3])
-def test_put_update_successfull(id_, browser_open):
-    url = f'{browser_open}users/{id_}'
+def test_put_update_successfull(id_, open_url):
+    url = f'{open_url}users/{id_}'
     schema = load_schema("put_update.json")
     payload = {
         "name": "Oleg",
@@ -74,8 +74,8 @@ def test_put_update_successfull(id_, browser_open):
 
 
 @pytest.mark.parametrize('id_', [3])
-def test_user_delete_successfull(id_, browser_open):
-    url = f'{browser_open}users/{id_}'
+def test_user_delete_successfull(id_, open_url):
+    url = f'{open_url}users/{id_}'
 
     result = requests.delete(url)
 
@@ -83,16 +83,16 @@ def test_user_delete_successfull(id_, browser_open):
 
 
 @pytest.mark.parametrize('id_', [3])
-def test_user_delete_successfull(id_, browser_open):
-    url = f'{browser_open}users/{id_}'
+def test_user_delete_successfull(id_, open_url):
+    url = f'{open_url}users/{id_}'
 
     result = requests.delete(url)
 
     assert result.status_code == 204
 
 
-def test_post_create(browser_open):
-    url = f'{browser_open}users'
+def test_post_create(open_url):
+    url = f'{open_url}users'
     schema = load_schema("post_create.json")
     payload = {
         "name": "Ivan",
@@ -105,8 +105,8 @@ def test_post_create(browser_open):
 
 
 @pytest.mark.parametrize('id_', [13, 23])
-def test_unknown_unsuccsessfuly(id_, browser_open):
-    url = f'{browser_open}unknown/{id_}'
+def test_unknown_unsuccsessfuly(id_, open_url):
+    url = f'{open_url}unknown/{id_}'
     result = requests.get(url)
     assert result.status_code == 404
     assert result.json() == {}

@@ -4,5 +4,5 @@ base_url = 'https://reqres.in/api/'
 
 
 @pytest.fixture(scope="function")
-def browser_open():
+def open_url():
     return base_url
